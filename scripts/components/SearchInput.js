@@ -1,3 +1,5 @@
+import { debounce } from "../utils/debounce.js";
+
 export class SearchInput {
   constructor(container, onSearch) {
     this.container = container;
@@ -14,15 +16,15 @@ export class SearchInput {
   }
 
   setupListener() {
-    let timeout;
+    const debouncedSearch = debounce((search) => {
+      if (this.onSearch) {
+        this.onSearch(search);
+      }
+    }, 300);
+
     this.element.addEventListener("input", (e) => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        const search = e.target.value.toLowerCase();
-        if (this.onSearch) {
-          this.onSearch(search);
-        }
-      }, 300);
+      const search = e.target.value.toLowerCase();
+      debouncedSearch(search);
     });
   }
 

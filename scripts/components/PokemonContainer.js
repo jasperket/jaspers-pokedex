@@ -1,6 +1,5 @@
 import { PokemonCard } from "./PokemonCard.js";
 import { Pagination } from "./Pagination.js";
-import { SearchInput } from "./SearchInput.js";
 
 export class PokemonContainer {
   constructor() {
@@ -9,18 +8,6 @@ export class PokemonContainer {
     this.ITEMS_PER_PAGE = 24;
     this.totalPokemon = 0;
     this.currentSearch = "";
-
-    // Initialize search
-    this.searchInput = new SearchInput(
-      document.querySelector(".search-container"),
-      (search) => this.handleSearch(search)
-    );
-    document
-      .querySelector(".search-container")
-      .insertBefore(
-        this.searchInput.element,
-        document.querySelector(".pagination-controls")
-      );
 
     // Initialize pagination
     this.pagination = new Pagination(
