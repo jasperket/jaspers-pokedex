@@ -1,8 +1,8 @@
 TODO
 
-- [ ] Implement data fetching from PokeAPI
-- [ ] Display the Pokemon cards
-- [ ] Add a search bar to filter the Pokemon cards
+- [x] Implement data fetching from PokeAPI
+- [x] Display the Pokemon cards
+- [x] Add a search bar to filter the Pokemon cards
 - [ ] Add filtering options:
   - [ ] By Generation (Gen 1-9)
   - [ ] By Type (Fire, Water, etc.)
