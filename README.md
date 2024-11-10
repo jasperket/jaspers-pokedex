@@ -3,4 +3,25 @@ TODO
 - [ ] Implement data fetching from PokeAPI
 - [ ] Display the Pokemon cards
 - [ ] Add a search bar to filter the Pokemon cards
-- [ ] Add a button to sort the Pokemon cards by type
+- [ ] Add filtering options:
+  - [ ] By Generation (Gen 1-9)
+  - [ ] By Type (Fire, Water, etc.)
+  - [ ] By Stats:
+    - [ ] HP: Set min/max values (e.g., HP between 50-100)
+    - [ ] Attack: Set min/max values
+    - [ ] Defense: Set min/max values
+    - [ ] Special Attack: Set min/max values
+    - [ ] Special Defense: Set min/max values
+    - [ ] Speed: Set min/max values
+    - [ ] Total Base Stats: Set min/max values (e.g., BST > 500)
+  - [ ] By Evolution stage (Basic, Stage 1, Stage 2)
+- [ ] Add sorting options:
+  - [ ] Alphabetically (A-Z/Z-A)
+  - [ ] By Pokedex number (Ascending/Descending)
+  - [ ] By Base stat total
+  - [ ] By Height/Weight
+- [ ] Add toggle for:
+  - [ ] Legendary Pokemon
+  - [ ] Mythical Pokemon
+  - [ ] Mega Evolutions
+  - [ ] Regional forms
