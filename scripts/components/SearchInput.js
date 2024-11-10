@@ -14,11 +14,19 @@ export class SearchInput {
   }
 
   setupListener() {
+    let timeout;
     this.element.addEventListener("input", (e) => {
-      const search = e.target.value.toLowerCase();
-      if (this.onSearch) {
-        this.onSearch(search);
-      }
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        const search = e.target.value.toLowerCase();
+        if (this.onSearch) {
+          this.onSearch(search);
+        }
+      }, 300);
     });
+  }
+
+  clear() {
+    this.element.value = "";
   }
 }
