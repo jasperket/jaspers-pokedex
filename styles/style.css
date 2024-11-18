@@ -33,7 +33,7 @@ body {
 
 .pokemon-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, 200px);
   gap: 2rem;
   padding: 2rem;
   grid-auto-rows: 1fr;
@@ -106,7 +106,7 @@ body {
 
 .pagination-footer {
   background-color: white;
-  padding: 1rem;
+  padding: 1rem 1rem 2rem 1rem;
   box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
   margin-top: auto;
   display: flex;
