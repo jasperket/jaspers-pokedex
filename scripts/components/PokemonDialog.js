@@ -20,19 +20,69 @@ export class PokemonDialog {
     this.dialog.showModal();
   }
 
+  calculateWeaknesses(types) {
+    const typeChart = {
+      normal: { weaknesses: ["fighting"], immunities: ["ghost"] },
+      fire: { weaknesses: ["water", "ground", "rock"] },
+      water: { weaknesses: ["electric", "grass"] },
+      electric: { weaknesses: ["ground"] },
+      grass: { weaknesses: ["fire", "ice", "poison", "flying", "bug"] },
+      ice: { weaknesses: ["fire", "fighting", "rock", "steel"] },
+      fighting: { weaknesses: ["flying", "psychic", "fairy"] },
+      poison: { weaknesses: ["ground", "psychic"] },
+      ground: {
+        weaknesses: ["water", "grass", "ice"],
+        immunities: ["electric"],
+      },
+      flying: {
+        weaknesses: ["electric", "ice", "rock"],
+        immunities: ["ground"],
+      },
+      psychic: { weaknesses: ["bug", "ghost", "dark"] },
+      bug: { weaknesses: ["fire", "flying", "rock"] },
+      rock: { weaknesses: ["water", "grass", "fighting", "ground", "steel"] },
+      ghost: {
+        weaknesses: ["ghost", "dark"],
+        immunities: ["normal", "fighting"],
+      },
+      dragon: { weaknesses: ["ice", "dragon", "fairy"] },
+      dark: {
+        weaknesses: ["fighting", "bug", "fairy"],
+        immunities: ["psychic"],
+      },
+      steel: { weaknesses: ["fire", "fighting", "ground"] },
+      fairy: { weaknesses: ["poison", "steel"], immunities: ["dragon"] },
+    };
+
+    let weaknesses = new Set();
+    let immunities = new Set();
+
+    types.forEach((type) => {
+      const typeData = typeChart[type.type.name];
+      if (typeData) {
+        typeData.weaknesses?.forEach((w) => weaknesses.add(w));
+        typeData.immunities?.forEach((i) => immunities.add(i));
+      }
+    });
+
+    immunities.forEach((immunity) => weaknesses.delete(immunity));
+
+    return Array.from(weaknesses);
+  }
+
   async show(pokemon) {
     this.showLoading();
 
     try {
-      // Fetch additional Pokemon species data for description
       const speciesResponse = await fetch(pokemon.species.url);
       const speciesData = await speciesResponse.json();
 
-      // Get English flavor text
       const description =
         speciesData.flavor_text_entries
           .find((entry) => entry.language.name === "en")
           ?.flavor_text.replace(/\f/g, " ") || "No description available.";
+
+      const weaknesses = this.calculateWeaknesses(pokemon.types);
 
       this.dialog.innerHTML = `
         <div class="dialog-content">
@@ -57,6 +107,37 @@ export class PokemonDialog {
             <div class="pokemon-info">
               <p class="description">${description}</p>
               
+              <div class="types-section">
+                <h3>Types</h3>
+                <div class="types-dialog">
+                  ${pokemon.types
+                    .map(
+                      (type) => `
+                    <span class="type-pill ${type.type.name}">${
+                        type.type.name.charAt(0).toUpperCase() +
+                        type.type.name.slice(1)
+                      }</span>
+                  `
+                    )
+                    .join("")}
+                </div>
+              </div>
+
+              <div class="weaknesses">
+                <h3>Weaknesses</h3>
+                <div class="types-dialog">
+                  ${weaknesses
+                    .map(
+                      (type) => `
+                    <span class="type-pill ${type}">${
+                        type.charAt(0).toUpperCase() + type.slice(1)
+                      }</span>
+                  `
+                    )
+                    .join("")}
+                </div>
+              </div>
+
               <div class="stats">
                 <h3>Base Stats</h3>
                 ${pokemon.stats
@@ -95,7 +176,6 @@ export class PokemonDialog {
         </div>
       `;
 
-      // Reattach event listener to close button
       const closeBtn = this.dialog.querySelector(".dialog-close");
       closeBtn.addEventListener("click", () => this.close());
     } catch (error) {
