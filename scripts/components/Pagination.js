@@ -1,28 +1,21 @@
 export class Pagination {
   constructor(container, options) {
-    this.container = container;
     this.currentPage = 1;
     this.totalItems = options.totalItems || 0;
     this.itemsPerPage = options.itemsPerPage || 24;
     this.onPageChange = options.onPageChange;
 
-    this.createElement();
-    this.updateControls();
-  }
-
-  setCurrentPage(page) {
-    this.currentPage = page;
-    this.updateControls();
+    this.element = this.createElement();
   }
 
   createElement() {
     const controls = document.createElement("div");
     controls.classList.add("pagination-controls");
     controls.innerHTML = `
-            <button class="prev-btn" aria-label="Previous page">←</button>
-            <span class="page-info">Page <span class="current-page">1</span></span>
-            <button class="next-btn" aria-label="Next page">→</button>
-        `;
+      <button class="prev-btn" aria-label="Previous page">←</button>
+      <span class="page-info">Page <span class="current-page">1</span></span>
+      <button class="next-btn" aria-label="Next page">→</button>
+    `;
 
     this.prevBtn = controls.querySelector(".prev-btn");
     this.nextBtn = controls.querySelector(".next-btn");
@@ -31,7 +24,12 @@ export class Pagination {
     this.prevBtn.addEventListener("click", () => this.changePage("prev"));
     this.nextBtn.addEventListener("click", () => this.changePage("next"));
 
-    this.container.appendChild(controls);
+    return controls;
+  }
+
+  setCurrentPage(page) {
+    this.currentPage = page;
+    this.updateControls();
   }
 
   updateControls() {

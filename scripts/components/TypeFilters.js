@@ -2,7 +2,6 @@ import { TypeFilter } from "./TypeFilter.js";
 
 export class TypeFilters {
   constructor(container, onFiltersChange) {
-    this.container = container;
     this.onFiltersChange = onFiltersChange;
     this.activeFilters = new Set();
     this.filters = [];
@@ -28,7 +27,9 @@ export class TypeFilters {
       "fairy",
     ];
 
-    this.createElement();
+    this.container = this.createElement();
+    container.appendChild(this.container);
+
     this.initializeFromURL();
   }
 
@@ -56,7 +57,7 @@ export class TypeFilters {
       nav.appendChild(filter.element);
     });
 
-    this.container.appendChild(nav);
+    return nav;
   }
 
   initializeFromURL() {

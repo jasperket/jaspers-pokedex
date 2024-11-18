@@ -2,6 +2,7 @@ import { PokemonContainer } from "./components/PokemonContainer.js";
 import { SearchInput } from "./components/SearchInput.js";
 import { Pagination } from "./components/Pagination.js";
 import { TypeFilters } from "./components/TypeFilters.js";
+import { GenerationFilter } from "./components/GenerationFilter.js";
 
 class PokedexApp {
   constructor() {
@@ -11,48 +12,50 @@ class PokedexApp {
 
     // Initialize components
     this.pokedex = new PokemonContainer();
-    this.searchInput = new SearchInput(
-      document.querySelector(".search-container"),
-      (search) => this.handleSearch(search)
+    const searchContainer = document.querySelector(".search-container");
+
+    // Initialize search input
+    this.searchInput = new SearchInput(searchContainer, (search) =>
+      this.handleSearch(search)
     );
 
-    // Initialize both paginations
+    // Initialize filters first
+    this.generationFilter = new GenerationFilter((generation) =>
+      this.handleGenerationFilter(generation)
+    );
+
+    // Add components to the DOM in the correct order
+    searchContainer.appendChild(this.searchInput.element);
+    searchContainer.appendChild(this.generationFilter.element);
+
+    // Initialize type filters after adding generation filter
+    this.typeFilters = new TypeFilters(searchContainer, (activeFilters) =>
+      this.handleTypeFilters(activeFilters)
+    );
+
+    // Initialize paginations
     const paginationOptions = {
       itemsPerPage: this.ITEMS_PER_PAGE,
       onPageChange: (page) => {
-        // Update both paginations when either one changes
         this.topPagination.setCurrentPage(page);
         this.bottomPagination.setCurrentPage(page);
         this.fetchCurrentPage(page);
       },
     };
 
-    this.topPagination = new Pagination(
-      document.querySelector(".search-container"),
-      paginationOptions
-    );
-
+    this.topPagination = new Pagination(searchContainer, paginationOptions);
     this.bottomPagination = new Pagination(
       document.querySelector(".pagination-footer"),
       paginationOptions
     );
 
-    // Insert search input before pagination controls
+    // Add paginations to DOM
+    searchContainer.appendChild(this.topPagination.element);
     document
-      .querySelector(".search-container")
-      .insertBefore(
-        this.searchInput.element,
-        document.querySelector(".pagination-controls")
-      );
+      .querySelector(".pagination-footer")
+      .appendChild(this.bottomPagination.element);
 
-    this.typeFilters = new TypeFilters(
-      document.querySelector(".search-container"),
-      (activeFilters) => this.handleTypeFilters(activeFilters)
-    );
-
-    // Inside the PokedexApp constructor, after initializing typeFilters
     window.addEventListener("popstate", () => {
-      // Reset filters and reinitialize from URL when back/forward buttons are used
       this.typeFilters.reset();
       this.typeFilters.initializeFromURL();
     });
@@ -82,6 +85,13 @@ class PokedexApp {
 
     // Show loading state immediately when search changes
     this.pokedex.showLoading();
+
+    const generation = this.generationFilter.getCurrentGeneration();
+    if (generation) {
+      // If a generation is selected, call handleGenerationFilter instead
+      await this.handleGenerationFilter(generation);
+      return;
+    }
 
     if (search === "" && this.typeFilters.activeFilters.size === 0) {
       // If search is cleared and no type filters, reset to normal pagination
@@ -182,6 +192,13 @@ class PokedexApp {
     // Show loading state immediately when filters change
     this.pokedex.showLoading();
 
+    const generation = this.generationFilter.getCurrentGeneration();
+    if (generation) {
+      // If a generation is selected, call handleGenerationFilter instead
+      await this.handleGenerationFilter(generation);
+      return;
+    }
+
     if (activeFilters.length === 0) {
       // If no filters are active, reset to normal view
       this.topPagination.setTotalItems(this.totalPokemon);
@@ -234,6 +251,79 @@ class PokedexApp {
       this.pokedex.displayPokemon(currentPagePokemon);
     } catch (error) {
       console.error("Error filtering Pokemon:", error);
+      this.pokedex.showError("Error filtering Pokemon. Please try again.");
+    }
+  }
+
+  async handleGenerationFilter(generation) {
+    const currentPage = this.topPagination.currentPage;
+    this.pokedex.showLoading();
+
+    if (!generation) {
+      // If no generation selected, reset to normal view
+      this.topPagination.setTotalItems(this.totalPokemon);
+      this.bottomPagination.setTotalItems(this.totalPokemon);
+      await this.fetchCurrentPage(currentPage);
+      return;
+    }
+
+    try {
+      // Fetch Pokemon for the selected generation
+      const response = await fetch(
+        `https://pokeapi.co/api/v2/pokemon?limit=${
+          generation.end - generation.start + 1
+        }&offset=${generation.start - 1}`
+      );
+      const data = await response.json();
+
+      // Apply existing search filter if any
+      let filteredPokemon = data.results;
+      if (this.currentSearch) {
+        filteredPokemon = filteredPokemon.filter((pokemon) =>
+          pokemon.name.startsWith(this.currentSearch)
+        );
+      }
+
+      // Fetch detailed data for filtered Pokemon
+      const detailedPokemon = await Promise.all(
+        filteredPokemon.map((pokemon) =>
+          fetch(pokemon.url).then((res) => res.json())
+        )
+      );
+
+      // Apply type filters if any are active
+      if (this.typeFilters.activeFilters.size > 0) {
+        filteredPokemon = detailedPokemon.filter((pokemon) =>
+          Array.from(this.typeFilters.activeFilters).every((type) =>
+            pokemon.types.some((t) => t.type.name === type)
+          )
+        );
+      } else {
+        filteredPokemon = detailedPokemon;
+      }
+
+      // Update pagination
+      const totalItems = filteredPokemon.length;
+      const maxPage = Math.ceil(totalItems / this.ITEMS_PER_PAGE);
+      const targetPage = Math.min(currentPage, maxPage);
+
+      this.topPagination.totalItems = totalItems;
+      this.bottomPagination.totalItems = totalItems;
+      this.topPagination.updateControls();
+      this.bottomPagination.updateControls();
+
+      if (filteredPokemon.length === 0) {
+        this.pokedex.showError("No Pokemon found matching your criteria.");
+        return;
+      }
+
+      // Display current page of filtered results
+      const startIdx = (targetPage - 1) * this.ITEMS_PER_PAGE;
+      const endIdx = startIdx + this.ITEMS_PER_PAGE;
+      const currentPagePokemon = filteredPokemon.slice(startIdx, endIdx);
+      this.pokedex.displayPokemon(currentPagePokemon);
+    } catch (error) {
+      console.error("Error filtering Pokemon by generation:", error);
       this.pokedex.showError("Error filtering Pokemon. Please try again.");
     }
   }

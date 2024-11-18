@@ -35,6 +35,26 @@ body {
   margin-top: 1rem;
 }
 
+.generation-filter {
+  margin: 1rem 0;
+}
+.generation-filter select {
+  padding: 0.5rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: white;
+  cursor: pointer;
+  min-width: 200px;
+}
+.generation-filter select:hover {
+  border-color: #bbb;
+}
+.generation-filter select:focus {
+  outline: none;
+  border-color: #78c850;
+}
+
 .pokemon-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -106,7 +126,7 @@ body {
 
 .pagination-footer {
   background-color: white;
-  padding: 1rem 1rem 2rem 1rem;
+  padding: 1rem;
   box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
   margin-top: auto;
   display: flex;
