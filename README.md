@@ -1,6 +1,6 @@
 # Jasper's Pokedex
 
-A modern, interactive Pokedex web application that allows users to explore and search through Pokemon using data from the PokeAPI.
+An interactive Pokedex web application that allows users to explore and search through Pokemon using data from the PokeAPI.
 
 ## Features
 
