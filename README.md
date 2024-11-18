@@ -8,7 +8,7 @@ An interactive Pokedex web application that allows users to explore and search t
 
 - **Pokemon Display**: View Pokemon cards with their sprites, types, and basic information
 - **Search Functionality**: Filter Pokemon by name in real-time
-- **Pagination**: Browse through Pokemon with 24 Pokemon per page
+- **Pagination**: Browse through Pokemon
 - **Type Filtering**: Filter Pokemon by their types (can select multiple types)
 - **Generation Filtering**: Filter Pokemon by their generation (Gen 1-9)
 
