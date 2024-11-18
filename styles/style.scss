@@ -106,7 +106,7 @@ body {
 }
 
 .pokemon-card {
-  background-color: white;
+  background: white;
   border-radius: 12px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 1rem;
@@ -116,6 +116,7 @@ body {
   justify-content: space-between;
   height: 100%;
   cursor: pointer;
+  color: white;
 
   .info {
     @include flex-column;
@@ -124,6 +125,19 @@ body {
 
   &:hover {
     transform: translateY(-5px);
+  }
+
+  .number {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+  }
+
+  .name {
+    color: white;
+  }
+
+  .img-container {
+    background-color: rgba(255, 255, 255, 0.2);
   }
 }
 
@@ -273,14 +287,36 @@ body {
   height: 32px;
   @include flex-center;
   margin-left: auto;
+  color: white;
 
   &:hover {
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.2);
   }
 }
 
 .dialog-content {
   padding: 2rem;
+  color: white;
+
+  .description {
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .stat-name {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .stat-bar-container {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .label {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .value {
+    color: white;
+  }
 }
 
 .dialog-header {
@@ -516,4 +552,26 @@ $types: (
   .stat-row {
     grid-template-columns: 100px 1fr;
   }
+}
+
+// Add CSS variables for type colors at the root level
+:root {
+  --type-normal: #{$type-normal};
+  --type-fire: #{$type-fire};
+  --type-water: #{$type-water};
+  --type-electric: #{$type-electric};
+  --type-grass: #{$type-grass};
+  --type-ice: #{$type-ice};
+  --type-fighting: #{$type-fighting};
+  --type-poison: #{$type-poison};
+  --type-ground: #{$type-ground};
+  --type-flying: #{$type-flying};
+  --type-psychic: #{$type-psychic};
+  --type-bug: #{$type-bug};
+  --type-rock: #{$type-rock};
+  --type-ghost: #{$type-ghost};
+  --type-dragon: #{$type-dragon};
+  --type-dark: #{$type-dark};
+  --type-steel: #{$type-steel};
+  --type-fairy: #{$type-fairy};
 }

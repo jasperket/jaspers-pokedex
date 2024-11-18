@@ -70,6 +70,13 @@ export class PokemonDialog {
     return Array.from(weaknesses);
   }
 
+  getTypeGradient(types) {
+    if (types.length === 1) {
+      return `var(--type-${types[0].type.name})`;
+    }
+    return `linear-gradient(135deg, var(--type-${types[0].type.name}) 0%, var(--type-${types[1].type.name}) 100%)`;
+  }
+
   async show(pokemon) {
     this.showLoading();
 
@@ -84,97 +91,100 @@ export class PokemonDialog {
 
       const weaknesses = this.calculateWeaknesses(pokemon.types);
 
-      this.dialog.innerHTML = `
-        <div class="dialog-content">
-          <div class="dialog-header">
-            <h2>${
-              pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)
-            }</h2>
-            <span class="number">#${pokemon.id
-              .toString()
-              .padStart(3, "0")}</span>
-            <button class="dialog-close">×</button>
+      const dialogContent = document.createElement("div");
+      dialogContent.classList.add("dialog-content");
+      dialogContent.style.background = this.getTypeGradient(pokemon.types);
+
+      dialogContent.innerHTML = `
+        <div class="dialog-header">
+          <h2>${
+            pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)
+          }</h2>
+          <span class="number">#${pokemon.id.toString().padStart(3, "0")}</span>
+          <button class="dialog-close">×</button>
+        </div>
+        
+        <div class="dialog-body">
+          <div class="dialog-image">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
+              pokemon.id
+            }.png" 
+                 alt="${pokemon.name}">
           </div>
           
-          <div class="dialog-body">
-            <div class="dialog-image">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
-                pokemon.id
-              }.png" 
-                   alt="${pokemon.name}">
-            </div>
+          <div class="pokemon-info">
+            <p class="description">${description}</p>
             
-            <div class="pokemon-info">
-              <p class="description">${description}</p>
-              
-              <div class="types-section">
-                <h3>Types</h3>
-                <div class="types-dialog">
-                  ${pokemon.types
-                    .map(
-                      (type) => `
-                    <span class="type-pill ${type.type.name}">${
-                        type.type.name.charAt(0).toUpperCase() +
-                        type.type.name.slice(1)
-                      }</span>
-                  `
-                    )
-                    .join("")}
-                </div>
-              </div>
-
-              <div class="weaknesses">
-                <h3>Weaknesses</h3>
-                <div class="types-dialog">
-                  ${weaknesses
-                    .map(
-                      (type) => `
-                    <span class="type-pill ${type}">${
-                        type.charAt(0).toUpperCase() + type.slice(1)
-                      }</span>
-                  `
-                    )
-                    .join("")}
-                </div>
-              </div>
-
-              <div class="stats">
-                <h3>Base Stats</h3>
-                ${pokemon.stats
+            <div class="types-section">
+              <h3>Types</h3>
+              <div class="types-dialog">
+                ${pokemon.types
                   .map(
-                    (stat) => `
-                  <div class="stat-row">
-                    <span class="stat-name">${stat.stat.name.replace(
-                      "-",
-                      " "
-                    )}:</span>
-                    <div class="stat-bar-container">
-                      <div class="stat-bar" style="width: ${
-                        (stat.base_stat / 255) * 100
-                      }%;">
-                        <span class="stat-value">${stat.base_stat}</span>
-                      </div>
-                    </div>
-                  </div>
+                    (type) => `
+                  <span class="type-pill ${type.type.name}">${
+                      type.type.name.charAt(0).toUpperCase() +
+                      type.type.name.slice(1)
+                    }</span>
                 `
                   )
                   .join("")}
               </div>
-              
-              <div class="pokemon-details">
-                <div class="detail">
-                  <span class="label">Height:</span>
-                  <span class="value">${pokemon.height / 10}m</span>
+            </div>
+
+            <div class="weaknesses">
+              <h3>Weaknesses</h3>
+              <div class="types-dialog">
+                ${weaknesses
+                  .map(
+                    (type) => `
+                  <span class="type-pill ${type}">${
+                      type.charAt(0).toUpperCase() + type.slice(1)
+                    }</span>
+                `
+                  )
+                  .join("")}
+              </div>
+            </div>
+
+            <div class="stats">
+              <h3>Base Stats</h3>
+              ${pokemon.stats
+                .map(
+                  (stat) => `
+                <div class="stat-row">
+                  <span class="stat-name">${stat.stat.name.replace(
+                    "-",
+                    " "
+                  )}:</span>
+                  <div class="stat-bar-container">
+                    <div class="stat-bar" style="width: ${
+                      (stat.base_stat / 255) * 100
+                    }%;">
+                      <span class="stat-value">${stat.base_stat}</span>
+                    </div>
+                  </div>
                 </div>
-                <div class="detail">
-                  <span class="label">Weight:</span>
-                  <span class="value">${pokemon.weight / 10}kg</span>
-                </div>
+              `
+                )
+                .join("")}
+            </div>
+            
+            <div class="pokemon-details">
+              <div class="detail">
+                <span class="label">Height:</span>
+                <span class="value">${pokemon.height / 10}m</span>
+              </div>
+              <div class="detail">
+                <span class="label">Weight:</span>
+                <span class="value">${pokemon.weight / 10}kg</span>
               </div>
             </div>
           </div>
         </div>
       `;
+
+      this.dialog.innerHTML = "";
+      this.dialog.appendChild(dialogContent);
 
       const closeBtn = this.dialog.querySelector(".dialog-close");
       closeBtn.addEventListener("click", () => this.close());

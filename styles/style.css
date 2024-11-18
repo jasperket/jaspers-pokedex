@@ -67,7 +67,7 @@ body {
 }
 
 .pokemon-card {
-  background-color: white;
+  background: white;
   border-radius: 12px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 1rem;
@@ -78,6 +78,7 @@ body {
   justify-content: space-between;
   height: 100%;
   cursor: pointer;
+  color: white;
 }
 .pokemon-card .info {
   display: flex;
@@ -86,6 +87,16 @@ body {
 }
 .pokemon-card:hover {
   transform: translateY(-5px);
+}
+.pokemon-card .number {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+.pokemon-card .name {
+  color: white;
+}
+.pokemon-card .img-container {
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .img-container {
@@ -234,13 +245,30 @@ body {
   align-items: center;
   justify-content: center;
   margin-left: auto;
+  color: white;
 }
 .dialog-close:hover {
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .dialog-content {
   padding: 2rem;
+  color: white;
+}
+.dialog-content .description {
+  color: rgba(255, 255, 255, 0.9);
+}
+.dialog-content .stat-name {
+  color: rgba(255, 255, 255, 0.8);
+}
+.dialog-content .stat-bar-container {
+  background: rgba(255, 255, 255, 0.2);
+}
+.dialog-content .label {
+  color: rgba(255, 255, 255, 0.8);
+}
+.dialog-content .value {
+  color: white;
 }
 
 .dialog-header {
@@ -513,6 +541,26 @@ body {
   .stat-row {
     grid-template-columns: 100px 1fr;
   }
+}
+:root {
+  --type-normal: #a8a878;
+  --type-fire: #f08030;
+  --type-water: #6890f0;
+  --type-electric: #f8d030;
+  --type-grass: #78c850;
+  --type-ice: #98d8d8;
+  --type-fighting: #c03028;
+  --type-poison: #a040a0;
+  --type-ground: #e0c068;
+  --type-flying: #a890f0;
+  --type-psychic: #f85888;
+  --type-bug: #a8b820;
+  --type-rock: #b8a038;
+  --type-ghost: #705898;
+  --type-dragon: #7038f8;
+  --type-dark: #705848;
+  --type-steel: #b8b8d0;
+  --type-fairy: #ee99ac;
 }
 
 /*# sourceMappingURL=style.css.map */

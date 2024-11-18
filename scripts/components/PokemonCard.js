@@ -7,9 +7,20 @@ export class PokemonCard {
     this.element = this.createElement();
   }
 
+  getTypeGradient() {
+    const types = this.pokemon.types;
+    if (types.length === 1) {
+      return `var(--type-${types[0].type.name})`;
+    }
+    return `linear-gradient(135deg, var(--type-${types[0].type.name}) 0%, var(--type-${types[1].type.name}) 100%)`;
+  }
+
   createElement() {
     const card = document.createElement("div");
     card.classList.add("pokemon-card");
+
+    // Add background color based on type
+    card.style.background = this.getTypeGradient();
 
     card.addEventListener("click", () => {
       if (this.onCardClick) {
