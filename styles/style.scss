@@ -338,7 +338,7 @@ body {
 }
 
 .dialog-image {
-  background: #f0f0f0;
+  background: $inner-bg;
   padding: 1rem;
   border-radius: 8px;
   @include flex-center;
@@ -539,7 +539,7 @@ $types: (
   }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 600px) {
   .dialog-body {
     grid-template-columns: 1fr;
     text-align: center;
@@ -551,6 +551,10 @@ $types: (
 
   .stat-row {
     grid-template-columns: 100px 1fr;
+  }
+
+  .types-dialog {
+    justify-content: center;
   }
 }
 
