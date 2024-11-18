@@ -1,14 +1,21 @@
 import { TypePill } from "./TypePill.js";
 
 export class PokemonCard {
-  constructor(pokemon) {
+  constructor(pokemon, onCardClick) {
     this.pokemon = pokemon;
+    this.onCardClick = onCardClick;
     this.element = this.createElement();
   }
 
   createElement() {
     const card = document.createElement("div");
     card.classList.add("pokemon-card");
+
+    card.addEventListener("click", () => {
+      if (this.onCardClick) {
+        this.onCardClick(this.pokemon);
+      }
+    });
 
     const name =
       this.pokemon.name[0].toUpperCase() + this.pokemon.name.slice(1);

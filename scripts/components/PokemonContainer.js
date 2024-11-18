@@ -1,5 +1,6 @@
 import { PokemonCard } from "./PokemonCard.js";
 import { Pagination } from "./Pagination.js";
+import { PokemonDialog } from "./PokemonDialog.js";
 
 export class PokemonContainer {
   constructor() {
@@ -8,6 +9,7 @@ export class PokemonContainer {
     this.ITEMS_PER_PAGE = 24;
     this.totalPokemon = 0;
     this.currentSearch = "";
+    this.dialog = new PokemonDialog();
 
     // Initialize both paginations
     const paginationOptions = {
@@ -140,7 +142,9 @@ export class PokemonContainer {
   }
 
   createPokemonCard(pokemon) {
-    const card = new PokemonCard(pokemon);
+    const card = new PokemonCard(pokemon, (clickedPokemon) => {
+      this.dialog.show(clickedPokemon);
+    });
     this.pokemonCards.push(card);
     this.container.appendChild(card.element);
   }
