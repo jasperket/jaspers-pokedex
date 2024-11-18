@@ -10,6 +10,11 @@ export class Pagination {
     this.updateControls();
   }
 
+  setCurrentPage(page) {
+    this.currentPage = page;
+    this.updateControls();
+  }
+
   createElement() {
     const controls = document.createElement("div");
     controls.classList.add("pagination-controls");
@@ -38,10 +43,12 @@ export class Pagination {
 
   setTotalItems(total) {
     this.totalItems = total;
+    this.currentPage = 1;
     this.updateControls();
   }
 
   async changePage(direction) {
+    const oldPage = this.currentPage;
     if (direction === "prev" && this.currentPage > 1) {
       this.currentPage--;
     } else if (
@@ -50,8 +57,8 @@ export class Pagination {
     ) {
       this.currentPage++;
     }
-    this.updateControls();
-    if (this.onPageChange) {
+
+    if (oldPage !== this.currentPage && this.onPageChange) {
       await this.onPageChange(this.currentPage);
     }
   }

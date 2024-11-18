@@ -9,13 +9,27 @@ export class PokemonContainer {
     this.totalPokemon = 0;
     this.currentSearch = "";
 
-    // Initialize pagination
-    this.pagination = new Pagination(
+    // Initialize both paginations
+    const paginationOptions = {
+      itemsPerPage: this.ITEMS_PER_PAGE,
+      onPageChange: (page) => {
+        // Update both paginations when either one changes
+        this.topPagination.setCurrentPage(page);
+        this.bottomPagination.setCurrentPage(page);
+        this.fetchCurrentPage(page);
+      },
+    };
+
+    // Top pagination
+    this.topPagination = new Pagination(
       document.querySelector(".search-container"),
-      {
-        itemsPerPage: this.ITEMS_PER_PAGE,
-        onPageChange: (page) => this.fetchCurrentPage(page),
-      }
+      paginationOptions
+    );
+
+    // Bottom pagination
+    this.bottomPagination = new Pagination(
+      document.querySelector(".pagination-footer"),
+      paginationOptions
     );
 
     this.initialize();
@@ -28,7 +42,8 @@ export class PokemonContainer {
       );
       const data = await response.json();
       this.totalPokemon = data.count;
-      this.pagination.setTotalItems(this.totalPokemon);
+      this.topPagination.setTotalItems(this.totalPokemon);
+      this.bottomPagination.setTotalItems(this.totalPokemon);
       await this.fetchCurrentPage(1);
     } catch (error) {
       console.error("Error initializing:", error);
@@ -41,7 +56,8 @@ export class PokemonContainer {
     this.currentSearch = search;
     if (search === "") {
       // If search is cleared, reset to normal pagination
-      this.pagination.setTotalItems(this.totalPokemon);
+      this.topPagination.setTotalItems(this.totalPokemon);
+      this.bottomPagination.setTotalItems(this.totalPokemon);
       await this.fetchCurrentPage(1);
       return;
     }
@@ -58,8 +74,9 @@ export class PokemonContainer {
         pokemon.name.startsWith(search)
       );
 
-      // Update pagination with new total
-      this.pagination.setTotalItems(filteredPokemon.length);
+      // Update both paginations with new total
+      this.topPagination.setTotalItems(filteredPokemon.length);
+      this.bottomPagination.setTotalItems(filteredPokemon.length);
 
       if (filteredPokemon.length === 0) {
         this.container.innerHTML =
