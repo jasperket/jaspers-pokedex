@@ -18,6 +18,9 @@ $type-dark: #705848;
 $type-steel: #b8b8d0;
 $type-fairy: #ee99ac;
 
+$outer-bg: #de3d2b;
+$inner-bg: #d9fffe;
+
 // Mixins
 @mixin flex-center {
   display: flex;
@@ -41,13 +44,13 @@ body {
   @include flex-column;
   align-items: center;
   padding: 2rem;
-  background-color: white;
+  background-color: $outer-bg;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: white;
 
   h1 {
     margin-bottom: 1rem;
     font-size: 2rem;
-    color: #333;
     text-align: center;
   }
 
@@ -58,6 +61,7 @@ body {
     border: 2px solid #ddd;
     border-radius: 8px;
     font-size: 1rem;
+    background-color: $inner-bg;
   }
 
   .pagination-controls {
@@ -76,7 +80,7 @@ body {
     border: 2px solid #ddd;
     border-radius: 8px;
     font-size: 1rem;
-    background-color: white;
+    background-color: $inner-bg;
     cursor: pointer;
     min-width: 200px;
 
@@ -97,6 +101,8 @@ body {
   gap: 2rem;
   padding: 2rem;
   grid-auto-rows: 1fr;
+  flex: 1;
+  background-color: $inner-bg;
 }
 
 .pokemon-card {
@@ -161,7 +167,7 @@ body {
 }
 
 .pagination-footer {
-  background-color: white;
+  background-color: $outer-bg;
   padding: 1rem;
   box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
   margin-top: auto;
@@ -179,7 +185,7 @@ body {
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 4px;
-    background-color: #f0f0f0;
+    background-color: $inner-bg;
     cursor: pointer;
     transition: background-color 0.2s;
     font-size: 1.2rem;
@@ -200,7 +206,7 @@ body {
 
 .page-info {
   font-size: 0.9rem;
-  color: #666;
+  color: white;
 }
 
 .loading,
@@ -430,7 +436,6 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
-  margin: 1.5rem 0;
   justify-content: center;
   padding: 0.5rem;
 }
