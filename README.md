@@ -1,27 +1,26 @@
-TODO
+# Jasper's Pokedex
 
-- [x] Implement data fetching from PokeAPI
-- [x] Display the Pokemon cards
-- [x] Add a search bar to filter the Pokemon cards
-- [ ] Add filtering options:
-  - [ ] By Generation (Gen 1-9)
-  - [ ] By Type (Fire, Water, etc.)
-  - [ ] By Stats:
-    - [ ] HP: Set min/max values (e.g., HP between 50-100)
-    - [ ] Attack: Set min/max values
-    - [ ] Defense: Set min/max values
-    - [ ] Special Attack: Set min/max values
-    - [ ] Special Defense: Set min/max values
-    - [ ] Speed: Set min/max values
-    - [ ] Total Base Stats: Set min/max values (e.g., BST > 500)
-  - [ ] By Evolution stage (Basic, Stage 1, Stage 2)
-- [ ] Add sorting options:
-  - [ ] Alphabetically (A-Z/Z-A)
-  - [ ] By Pokedex number (Ascending/Descending)
-  - [ ] By Base stat total
-  - [ ] By Height/Weight
-- [ ] Add toggle for:
-  - [ ] Legendary Pokemon
-  - [ ] Mythical Pokemon
-  - [ ] Mega Evolutions
-  - [ ] Regional forms
+A modern, interactive Pokedex web application that allows users to explore and search through Pokemon using data from the PokeAPI.
+
+## Features
+
+### Currently Implemented
+
+- **Pokemon Display**: View Pokemon cards with their sprites, types, and basic information
+- **Search Functionality**: Filter Pokemon by name in real-time
+- **Pagination**: Browse through Pokemon with 24 Pokemon per page
+- **Type Filtering**: Filter Pokemon by their types (can select multiple types)
+- **Generation Filtering**: Filter Pokemon by their generation (Gen 1-9)
+
+## Technical Details
+
+### Built With
+
+- Vanilla JavaScript (ES6+)
+- CSS/SCSS
+- HTML5
+- [PokeAPI](https://pokeapi.co/) for Pokemon data
+
+## Credits
+
+- Data provided by [PokeAPI](https://pokeapi.co/)
