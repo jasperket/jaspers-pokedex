@@ -575,3 +575,21 @@ $types: (
   --type-steel: #{$type-steel};
   --type-fairy: #{$type-fairy};
 }
+
+.attribution {
+  text-align: center;
+  padding: 1rem;
+  background-color: $outer-bg;
+  color: white;
+  font-size: 0.9rem;
+
+  a {
+    color: $inner-bg;
+    text-decoration: none;
+    font-weight: 500;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

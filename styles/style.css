@@ -563,4 +563,20 @@ body {
   --type-fairy: #ee99ac;
 }
 
+.attribution {
+  text-align: center;
+  padding: 1rem;
+  background-color: #de3d2b;
+  color: white;
+  font-size: 0.9rem;
+}
+.attribution a {
+  color: #d9fffe;
+  text-decoration: none;
+  font-weight: 500;
+}
+.attribution a:hover {
+  text-decoration: underline;
+}
+
 /*# sourceMappingURL=style.css.map */
