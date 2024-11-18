@@ -380,3 +380,47 @@ body {
     transform: rotate(360deg);
   }
 }
+
+.type-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+  justify-content: center;
+  padding: 0.5rem;
+}
+
+.type-filter {
+  cursor: pointer;
+  opacity: 0.6;
+  transition: all 0.2s ease-out;
+  padding: 0;
+  border: none;
+  background: none;
+  display: flex;
+  align-items: center;
+}
+
+.type-filter:hover {
+  opacity: 0.8;
+  transform: translateY(-1px) scale(1.05);
+}
+
+.type-filter.selected {
+  opacity: 1;
+  transform: translateY(-2px) scale(1.15);
+}
+
+.type-filter.selected .type-pill {
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+.type-filter:focus {
+  outline: 2px solid #78c850;
+  outline-offset: 2px;
+  border-radius: 999px;
+}
+
+.type-filter:focus:not(:focus-visible) {
+  outline: none;
+}
