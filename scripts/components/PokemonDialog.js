@@ -109,7 +109,8 @@ export class PokemonDialog {
             <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
               pokemon.id
             }.png" 
-                 alt="${pokemon.name}">
+                 alt="${pokemon.name}"
+                 class="pokemon-sprite">
           </div>
           
           <div class="pokemon-info">
@@ -188,6 +189,11 @@ export class PokemonDialog {
 
       const closeBtn = this.dialog.querySelector(".dialog-close");
       closeBtn.addEventListener("click", () => this.close());
+
+      const pokemonImage = this.dialog.querySelector(".pokemon-sprite");
+      pokemonImage.addEventListener("load", () => {
+        pokemonImage.classList.add("bubble-animation");
+      });
     } catch (error) {
       this.dialog.innerHTML = `
         <div class="dialog-content">

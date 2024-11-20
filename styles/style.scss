@@ -425,6 +425,10 @@ body {
   img {
     width: 150px;
     height: 150px;
+
+    &.bubble-animation {
+      animation: bubbleEffect 0.6s ease-out;
+    }
   }
 }
 
@@ -674,5 +678,18 @@ $types: (
     &:hover {
       text-decoration: underline;
     }
+  }
+}
+
+// Add this with your other animations
+@keyframes bubbleEffect {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
   }
 }
